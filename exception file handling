@@ -1,0 +1,47 @@
+class ExceptionDemo:
+    def divide(self):
+        try:
+            a = int(input("Enter first number: "))
+            b = int(input("Enter second number: "))
+            result = a / b
+            print("Result of Division is:", result)
+        except ZeroDivisionError:
+            print("Error: Divide by zero error occurred")
+        except ValueError:
+            print("Error: Input not in specified data type")
+    def access_list(self):
+        try:
+            my_list = [10, 20, 30, 40, 50]
+            print("List elements are:", my_list)
+            index = int(input("Enter index to access list element: "))
+            print("Element at index", index, "is:", my_list[index])
+        except ValueError:
+            print("Error: Input not in specified data type")
+        except IndexError:
+            print("Error: Index out of range")
+    def open_file(self):
+        try:
+            filename = input("Enter file name to open: ")
+            with open(filename, "r") as f:
+                print("File content is:")
+                print(f.read())
+        except FileNotFoundError:
+            print("Error: File not found")
+    def add_data(self):
+        try:
+            num = int(input("Enter a number: "))
+            text = input("Enter a string: ")
+            # This will trigger the TypeError as intended
+            result = num + text
+            print("Result is:", result)
+        except TypeError:
+            print("Error: Cannot add integer and string directly")
+obj = ExceptionDemo()
+print("\n___Divide Exception___")
+obj.divide()
+print("\n___Access List Exception___")
+obj.access_list()
+print("\n___File Handling Exception___")
+obj.open_file()
+print("\n___Type Error Exception___")
+obj.add_data()
