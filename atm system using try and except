@@ -1,0 +1,61 @@
+class InvalidPINError(Exception):
+    pass
+class AccountBlockedError(Exception):
+    pass
+class ATM:
+    def __init__(self, username, pin, balance):
+        self.username = username
+        self.pin = pin
+        self.balance = balance
+        self.attempts = 0
+    def verify_pin(self, entered_pin):
+        try:
+            if self.attempts >= 3:
+                raise AccountBlockedError("Account Blocked due to 3 wrong attempts.")
+            if entered_pin != self.pin:
+                self.attempts += 1
+                raise InvalidPINError(f"Incorrect PIN. Attempts left: {3 - self.attempts}")
+            print("PIN verified successfully!")
+            self.attempts = 0
+            return True
+        except (InvalidPINError, AccountBlockedError) as e:
+            print("Error:", e)
+            return False
+    def withdrawal(self, amount):
+        try:
+            if self.attempts >= 3:
+                raise AccountBlockedError("Account Blocked. Cannot withdraw.")
+            if amount > self.balance:
+                raise Exception("Insufficient balance.")
+            self.balance -= amount
+            print(f"Withdrawal successful! Amount: {amount}")
+            print(f"Remaining balance: {self.balance}")
+        except Exception as e:
+            print("Error:", e)
+atm = ATM("Thangamudi", 1234, 10000)
+while True:
+    print("\n______ ATM SYSTEM ______")
+    print("1. Verify PIN")
+    print("2. Withdraw money")
+    print("3. Check balance")
+    print("4. Exit")
+    try:
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            entered_pin = int(input("Enter PIN: "))
+            atm.verify_pin(entered_pin)
+        elif choice == 2:
+            entered_pin = int(input("Enter PIN to withdraw: "))
+            if atm.verify_pin(entered_pin):
+                amount = float(input("Enter the amount to withdraw: "))
+                atm.withdrawal(amount)
+        elif choice == 3:
+            print(f"Account Holder: {atm.username}")
+            print(f"Current Balance: {atm.balance}")
+        elif choice == 4:
+            print("Thank you for using our ATM. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please pick 1-4.")
+    except ValueError:
+        print("Invalid input! Please enter a number."
